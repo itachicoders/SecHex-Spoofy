@@ -1,4 +1,4 @@
-name: Build HWID Spoofer for Windows
+name: Build SecHex-Spoofy for Windows
 
 on:
   push:
@@ -21,17 +21,26 @@ jobs:
         with:
           dotnet-version: '7.0'
 
-      - name: Restore dependencies
-        run: dotnet restore
+      - name: Restore dependencies for SecHex-CMDLINE
+        run: dotnet restore ./SecHex-CMDLINE/SecHex-CMDLINE.csproj
 
-      - name: Build project
-        run: dotnet build --configuration Release
+      - name: Build SecHex-CMDLINE
+        run: dotnet build ./SecHex-CMDLINE/SecHex-CMDLINE.csproj --configuration Release
 
-      - name: Publish application
-        run: dotnet publish --configuration Release --output ./publish
+      - name: Publish SecHex-CMDLINE
+        run: dotnet publish ./SecHex-CMDLINE/SecHex-CMDLINE.csproj --configuration Release --output ./publish/SecHex-CMDLINE
+
+      - name: Restore dependencies for SecHex-GUI
+        run: dotnet restore ./SecHex-GUI/SecHex-GUI.csproj
+
+      - name: Build SecHex-GUI
+        run: dotnet build ./SecHex-GUI/SecHex-GUI.csproj --configuration Release
+
+      - name: Publish SecHex-GUI
+        run: dotnet publish ./SecHex-GUI/SecHex-GUI.csproj --configuration Release --output ./publish/SecHex-GUI
 
       - name: Archive build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: SecHex-Spoofy-HWIDspoofer
+          name: SecHex-Spoofy
           path: ./publish
